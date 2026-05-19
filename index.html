@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>标普/纳指智能定投执行器 · GitHub Actions版</title>
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--line:#e2e8f0;--text:#0f172a;--muted:#64748b;--blue:#2563eb;--cyan:#0891b2;--red:#dc2626;--green:#16a34a;--amber:#d97706;--purple:#7c3aed;--shadow:0 14px 34px rgba(15,23,42,.08);--r:18px}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#eef4ff,#f8fafc 300px,var(--bg));color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","Microsoft YaHei",Arial,sans-serif;line-height:1.55}header,.wrap{max-width:1460px;margin:0 auto;padding:22px}h1{margin:0 0 8px;font-size:clamp(24px,3vw,36px)}h2{margin:0 0 12px;font-size:19px}.sub{color:var(--muted);font-size:14px}.grid{display:grid;gap:14px}.top{grid-template-columns:repeat(4,minmax(0,1fr))}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.card,.section{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px}.k{font-size:12px;color:var(--muted);margin-bottom:6px}.v{font-size:24px;font-weight:850}.s{font-size:13px;color:var(--muted);margin-top:5px}.red{color:var(--red)}.green{color:var(--green)}.blue{color:var(--blue)}.amber{color:var(--amber)}.purple{color:var(--purple)}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}button{border:0;border-radius:12px;padding:10px 14px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;font-weight:750;cursor:pointer}button.secondary{background:#fff;color:#334155;border:1px solid #cbd5e1}.pill{display:inline-flex;align-items:center;margin:3px;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:750;background:#eff6ff;color:#1d4ed8}.pill.warn{background:#fef3c7;color:#92400e}.pill.bad{background:#fee2e2;color:#991b1b}.pill.ok{background:#dcfce7;color:#166534}.pill.neu{background:#f1f5f9;color:#475569}table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px solid #e5e7eb;padding:8px;text-align:right;white-space:nowrap}th{background:#f1f5f9;color:#334155;font-size:12px}td:first-child,th:first-child{text-align:left}.tablebox{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff}.note{font-size:13px;color:var(--muted)}code{background:#eff6ff;color:#1d4ed8;padding:1px 5px;border-radius:5px}.progress{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:10px}.bar{height:100%;background:linear-gradient(90deg,#22c55e,#f59e0b,#ef4444)}details{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;margin-top:10px}summary{cursor:pointer;font-weight:850}.err{border-color:#fecaca;background:#fef2f2;color:#7f1d1d}.okbox{border-color:#bbf7d0;background:#f0fdf4;color:#14532d}@media(max-width:980px){.top,.two,.three{grid-template-columns:1fr}.wrap,header{padding-left:12px;padding-right:12px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>标普/纳指智能定投执行器 · GitHub Actions 半后端版</h1>
+  <div class="sub">每天由 GitHub Actions 自动抓取指数数据、计算 5/10/20 日压力状态并生成建议。你每天早上只需要打开本页。</div>
+</header>
+<main class="wrap">
+  <div class="toolbar">
+    <button onclick="loadData(true)">刷新页面数据</button>
+    <button class="secondary" onclick="location.href='data/latest.json'">查看 latest.json</button>
+  </div>
+  <section id="status" class="section">正在读取 data/latest.json……</section>
+  <section class="grid top" id="topCards"></section>
+  <section class="grid two" style="margin-top:14px" id="decisionGrid"></section>
+  <section class="section" style="margin-top:14px">
+    <h2>最近80个交易日建议记录</h2>
+    <div class="tablebox"><table><thead><tr><th>日期</th><th>资产</th><th>涨跌</th><th>场外建议</th><th>场内候选</th><th>预算计入</th><th>5日累计</th><th>10日累计</th><th>20日累计</th><th>机制</th></tr></thead><tbody id="histBody"></tbody></table></div>
+    <p class="note">这里是“策略建议账本”，不是券商真实成交账本。默认预算口径可在 <code>data/config.json</code> 设置为 <code>recommended</code> 或 <code>outside_only</code>。</p>
+  </section>
+  <section class="section" style="margin-top:14px">
+    <h2>策略理论与执行规则</h2>
+    <details open><summary>纳指100：固定5000基准 + 三项压力机制</summary>
+      <p>纳指保留固定5000基准的四档：≥+1.5% 买2500，-1%~+1.5% 买5000，-2%~-1% 买7000，≤-2% 为场外8000+场内4000候选。40年数据没有推翻5000基准，真正需要控制的是两类行情：连续阴跌时买得不够，连续暴跌时太快消耗弹药。</p>
+      <p><b>阴跌补丁：</b>近5日累计≤-3%，且5日内无单日≤-2%，则把原本5000/7000提升到场外8000；不涉及场内，不承担溢价风险。</p>
+      <p><b>大跌簇：</b>近5日内第3次出现≤-2%，暂停场内4000候选，只保留场外8000。</p>
+      <p><b>滚动预算：</b>5日4万 / 10日7万 / 20日14万；触发时优先削减场内候选。</p>
+    </details>
+    <details open><summary>标普500：轻量化三机制</summary>
+      <p>标普波动低于纳指，场外2000固定不变。跌-1%~-2%时场内候选3000，跌-2%~-3%时场内候选8000，跌≤-3%时场内候选15000。</p>
+      <p><b>标普阴跌补丁：</b>近5日累计≤-3%，且5日内无单日≤-2%，总候选提升至5000，即场外2000+场内候选3000。</p>
+      <p><b>标普大跌簇：</b>近5日内第3次≤-2%，总候选降至5000。</p>
+      <p><b>标普滚动预算：</b>5日3万 / 10日5万 / 20日9万；主要用于限制场内大额候选。</p>
+    </details>
+    <details><summary>为什么这个方案适合 GitHub Actions + Pages</summary>
+      <p>GitHub Pages 只能展示静态网页，不能长期运行Python；GitHub Actions 可以按计划自动运行Python脚本，生成 <code>data/latest.json</code> 后再部署到 Pages。这样既保留了网页的简单性，又获得了“每天自动计算”的后端能力。</p>
+    </details>
+  </section>
+</main>
+<script>
+let DATA=null;
+const nameMap={ndx:'纳指100',spx:'标普500'};
+function fmt(n,d=0){if(n==null||isNaN(Number(n)))return'--';return Number(n).toLocaleString('zh-CN',{maximumFractionDigits:d,minimumFractionDigits:d})}
+function money(n){return fmt(n,0)}
+function pct(n){if(n==null||isNaN(Number(n)))return'--';return (Number(n)>=0?'+':'')+Number(n).toFixed(2)+'%'}
+function cls(n){return Number(n)>=0?'red':'green'}
+function pills(list){return (list&&list.length)?list.map(x=>`<span class="pill warn">${x}</span>`).join(''):'<span class="pill ok">常规</span>'}
+async function loadData(force=false){try{const url='data/latest.json'+(force?`?t=${Date.now()}`:''); const r=await fetch(url,{cache:'no-store'}); if(!r.ok)throw new Error('无法读取 data/latest.json'); DATA=await r.json(); render();}catch(e){document.getElementById('status').className='section err'; document.getElementById('status').textContent='加载失败：'+e.message+'。请先等待 GitHub Actions 跑完一次，或手动触发 Update ETF DCA Data。';}}
+function render(){document.getElementById('status').className='section okbox'; document.getElementById('status').innerHTML=`<b>数据已更新：</b>${DATA.generated_at_beijing}（北京时间）｜预算口径：<code>${DATA.config.budget_count_mode}</code><br><span class="note">数据源尝试结果可在 latest.json 中查看。若显示 source=seed，说明接口失败时使用了历史种子数据。</span>`;
+  const tops=[]; ['ndx','spx'].forEach(s=>{const obj=DATA.symbols[s];const d=obj.latest;const p=obj.progress;tops.push(`<div class="card"><div class="k">${nameMap[s]} 最新涨跌</div><div class="v ${cls(d.pct)}">${pct(d.pct)}</div><div class="s">${d.date} 收盘 ${fmt(d.close,2)}｜${obj.data_source}</div></div><div class="card"><div class="k">${nameMap[s]}计划剩余</div><div class="v blue">${money(p.remaining)}</div><div class="s">进度 ${fmt(p.progress_pct,1)}%，估算剩余 ${p.estimated_trading_days_left??'--'} 个交易日</div><div class="progress"><div class="bar" style="width:${Math.min(100,p.progress_pct)}%"></div></div></div>`)}); document.getElementById('topCards').innerHTML=tops.join('');
+  document.getElementById('decisionGrid').innerHTML=['ndx','spx'].map(s=>decisionCard(s,DATA.symbols[s])).join('');
+  const rows=[]; ['ndx','spx'].forEach(s=>{(DATA.symbols[s].recent_decisions||[]).slice().reverse().forEach(d=>{rows.push(`<tr><td>${d.date}</td><td>${nameMap[s]}</td><td class="${cls(d.pct)}">${pct(d.pct)}</td><td>${money(d.outside)}</td><td>${money(d.inside)}</td><td>${money(d.counted_amount)}</td><td class="${cls(d.windows.cum5)}">${pct(d.windows.cum5)}</td><td class="${cls(d.windows.cum10)}">${pct(d.windows.cum10)}</td><td class="${cls(d.windows.cum20)}">${pct(d.windows.cum20)}</td><td style="text-align:left">${pills(d.mechanisms)}</td></tr>`)});}); document.getElementById('histBody').innerHTML=rows.join('');}
+function decisionCard(s,obj){const d=obj.latest,w=d.windows,p=obj.progress;return `<div class="card"><h2>${nameMap[s]} 今日建议</h2><div class="grid three"><div><div class="k">场外建议</div><div class="v blue">${money(d.outside)}</div></div><div><div class="k">场内候选</div><div class="v amber">${money(d.inside)}</div></div><div><div class="k">预算计入</div><div class="v purple">${money(d.counted_amount)}</div></div></div><p>${pills(d.mechanisms)}</p><div class="tablebox"><table><tbody><tr><td>基础状态</td><td>${d.base_label}</td></tr><tr><td>5日累计</td><td class="${cls(w.cum5)}">${pct(w.cum5)}</td></tr><tr><td>10日累计</td><td class="${cls(w.cum10)}">${pct(w.cum10)}</td></tr><tr><td>20日累计</td><td class="${cls(w.cum20)}">${pct(w.cum20)}</td></tr><tr><td>5日≤-2%次数</td><td>${w.count_le2_5}</td></tr><tr><td>近20日均计入</td><td>${money(p.avg20_counted)}</td></tr></tbody></table></div><p class="note">${d.theory}</p></div>`}
+loadData();
+</script>
+</body>
+</html>

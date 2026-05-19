@@ -1,0 +1,39 @@
+{
+  "plan_start_date": "2026-05-20",
+  "budget_count_mode": "recommended",
+  "targets": {
+    "ndx": {
+      "name": "纳斯达克100",
+      "current_cost_at_start": 285500,
+      "target_cost": 1330000
+    },
+    "spx": {
+      "name": "标普500",
+      "current_cost_at_start": 951600,
+      "target_cost": 1620000
+    }
+  },
+  "rules": {
+    "ndx": {
+      "base": 5000,
+      "up_big": 2500,
+      "down_medium": 7000,
+      "down_big_outside": 8000,
+      "down_big_inside_candidate": 4000,
+      "yin_die_5d_threshold_pct": -3,
+      "big_down_threshold_pct": -2,
+      "budget_caps": {"5": 40000, "10": 70000, "20": 140000}
+    },
+    "spx": {
+      "outside_fixed": 2000,
+      "inside_down_1": 3000,
+      "inside_down_2": 8000,
+      "inside_down_3": 15000,
+      "yin_die_total_candidate": 5000,
+      "big_down_cluster_total_candidate": 5000,
+      "yin_die_5d_threshold_pct": -3,
+      "big_down_threshold_pct": -2,
+      "budget_caps": {"5": 30000, "10": 50000, "20": 90000}
+    }
+  }
+}
