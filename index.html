@@ -3,64 +3,171 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>标普/纳指智能定投执行器 · GitHub Actions版</title>
+<title>标普/纳指智能定投执行器 · Actions增强版</title>
 <style>
-:root{--bg:#f6f8fb;--card:#fff;--line:#e2e8f0;--text:#0f172a;--muted:#64748b;--blue:#2563eb;--cyan:#0891b2;--red:#dc2626;--green:#16a34a;--amber:#d97706;--purple:#7c3aed;--shadow:0 14px 34px rgba(15,23,42,.08);--r:18px}
-*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#eef4ff,#f8fafc 300px,var(--bg));color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","Microsoft YaHei",Arial,sans-serif;line-height:1.55}header,.wrap{max-width:1460px;margin:0 auto;padding:22px}h1{margin:0 0 8px;font-size:clamp(24px,3vw,36px)}h2{margin:0 0 12px;font-size:19px}.sub{color:var(--muted);font-size:14px}.grid{display:grid;gap:14px}.top{grid-template-columns:repeat(4,minmax(0,1fr))}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.card,.section{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px}.k{font-size:12px;color:var(--muted);margin-bottom:6px}.v{font-size:24px;font-weight:850}.s{font-size:13px;color:var(--muted);margin-top:5px}.red{color:var(--red)}.green{color:var(--green)}.blue{color:var(--blue)}.amber{color:var(--amber)}.purple{color:var(--purple)}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px}button{border:0;border-radius:12px;padding:10px 14px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;font-weight:750;cursor:pointer}button.secondary{background:#fff;color:#334155;border:1px solid #cbd5e1}.pill{display:inline-flex;align-items:center;margin:3px;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:750;background:#eff6ff;color:#1d4ed8}.pill.warn{background:#fef3c7;color:#92400e}.pill.bad{background:#fee2e2;color:#991b1b}.pill.ok{background:#dcfce7;color:#166534}.pill.neu{background:#f1f5f9;color:#475569}table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px solid #e5e7eb;padding:8px;text-align:right;white-space:nowrap}th{background:#f1f5f9;color:#334155;font-size:12px}td:first-child,th:first-child{text-align:left}.tablebox{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff}.note{font-size:13px;color:var(--muted)}code{background:#eff6ff;color:#1d4ed8;padding:1px 5px;border-radius:5px}.progress{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:10px}.bar{height:100%;background:linear-gradient(90deg,#22c55e,#f59e0b,#ef4444)}details{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;margin-top:10px}summary{cursor:pointer;font-weight:850}.err{border-color:#fecaca;background:#fef2f2;color:#7f1d1d}.okbox{border-color:#bbf7d0;background:#f0fdf4;color:#14532d}@media(max-width:980px){.top,.two,.three{grid-template-columns:1fr}.wrap,header{padding-left:12px;padding-right:12px}}
+:root{--bg:#f6f8fb;--card:#fff;--line:#e2e8f0;--text:#0f172a;--muted:#64748b;--blue:#2563eb;--cyan:#0891b2;--red:#dc2626;--green:#16a34a;--amber:#d97706;--purple:#7c3aed;--shadow:0 14px 34px rgba(15,23,42,.08);--r:18px;--soft:#f8fafc}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#eef4ff,#f8fafc 320px,var(--bg));color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans SC","Microsoft YaHei",Arial,sans-serif;line-height:1.55}header,.wrap{max-width:1560px;margin:0 auto;padding:22px}h1{margin:0 0 8px;font-size:clamp(24px,3vw,36px)}h2{margin:0 0 12px;font-size:19px}h3{margin:0 0 8px;font-size:16px}.sub{color:var(--muted);font-size:14px}.grid{display:grid;gap:14px}.top{grid-template-columns:repeat(4,minmax(0,1fr))}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}.four{grid-template-columns:repeat(4,minmax(0,1fr))}.card,.section{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:16px}.k{font-size:12px;color:var(--muted);margin-bottom:6px}.v{font-size:24px;font-weight:850}.big{font-size:30px}.s{font-size:13px;color:var(--muted);margin-top:5px}.red{color:var(--red)}.green{color:var(--green)}.blue{color:var(--blue)}.amber{color:var(--amber)}.purple{color:var(--purple)}.muted{color:var(--muted)}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px;align-items:center}button{border:0;border-radius:12px;padding:10px 14px;background:linear-gradient(135deg,var(--blue),var(--cyan));color:#fff;font-weight:750;cursor:pointer}button.secondary{background:#fff;color:#334155;border:1px solid #cbd5e1}button.warn{background:linear-gradient(135deg,#d97706,#ea580c)}button:disabled{opacity:.55;cursor:not-allowed}.pill{display:inline-flex;align-items:center;margin:3px;padding:5px 9px;border-radius:999px;font-size:12px;font-weight:750;background:#eff6ff;color:#1d4ed8}.pill.warn{background:#fef3c7;color:#92400e}.pill.bad{background:#fee2e2;color:#991b1b}.pill.ok{background:#dcfce7;color:#166534}.pill.neu{background:#f1f5f9;color:#475569}.pill.purple{background:#f3e8ff;color:#6b21a8}table{width:100%;border-collapse:collapse;font-size:13px}th,td{border-bottom:1px solid #e5e7eb;padding:8px;text-align:right;white-space:nowrap}th{background:#f1f5f9;color:#334155;font-size:12px}td:first-child,th:first-child{text-align:left}.tablebox{overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff}.note{font-size:13px;color:var(--muted)}code{background:#eff6ff;color:#1d4ed8;padding:1px 5px;border-radius:5px}.progress{height:10px;background:#e5e7eb;border-radius:999px;overflow:hidden;margin-top:10px}.bar{height:100%;background:linear-gradient(90deg,#22c55e,#f59e0b,#ef4444)}details{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;margin-top:10px}summary{cursor:pointer;font-weight:850}.err{border-color:#fecaca;background:#fef2f2;color:#7f1d1d}.okbox{border-color:#bbf7d0;background:#f0fdf4;color:#14532d}.warnbox{border-color:#fde68a;background:#fffbeb;color:#78350f}.inputrow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.inputrow label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}input,select{width:100%;border:1px solid #cbd5e1;border-radius:12px;padding:10px 12px;background:#fff;color:var(--text);outline:none}.mini{font-size:12px}.rank1{background:#fff7ed}.rankok{background:#f0fdf4}.rankbad{background:#fef2f2}.sticky{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.88);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);padding:10px}.right{text-align:right}.left{text-align:left}@media(max-width:1100px){.top,.two,.three,.four,.inputrow{grid-template-columns:1fr}.wrap,header{padding-left:12px;padding-right:12px}.sticky{position:static}}
 </style>
 </head>
 <body>
 <header>
-  <h1>标普/纳指智能定投执行器 · GitHub Actions 半后端版</h1>
-  <div class="sub">每天由 GitHub Actions 自动抓取指数数据、计算 5/10/20 日压力状态并生成建议。你每天早上只需要打开本页。</div>
+  <h1>标普/纳指智能定投执行器 · GitHub Actions 增强版</h1>
+  <div class="sub">后端半自动：GitHub Actions 每天生成指数历史与压力机制；前端实时：抓国内ETF溢价、计算折后便宜度、支持手动兜底。</div>
 </header>
 <main class="wrap">
-  <div class="toolbar">
-    <button onclick="loadData(true)">刷新页面数据</button>
-    <button class="secondary" onclick="location.href='data/latest.json'">查看 latest.json</button>
+  <div class="sticky">
+    <div class="toolbar" style="margin:0">
+      <button id="btnAll">刷新全部数据</button>
+      <button class="secondary" id="btnLatest">只刷新 latest.json</button>
+      <button class="secondary" id="btnPremium">只刷新ETF溢价</button>
+      <button class="secondary" onclick="window.open('data/latest.json','_blank')">查看 latest.json</button>
+      <span id="miniStatus" class="pill neu">就绪</span>
+    </div>
   </div>
-  <section id="status" class="section">正在读取 data/latest.json……</section>
-  <section class="grid top" id="topCards"></section>
+
+  <section id="status" class="section" style="margin-top:14px">正在读取 data/latest.json……</section>
+  <section class="grid top" id="topCards" style="margin-top:14px"></section>
   <section class="grid two" style="margin-top:14px" id="decisionGrid"></section>
+
   <section class="section" style="margin-top:14px">
-    <h2>最近80个交易日建议记录</h2>
-    <div class="tablebox"><table><thead><tr><th>日期</th><th>资产</th><th>涨跌</th><th>场外建议</th><th>场内候选</th><th>预算计入</th><th>5日累计</th><th>10日累计</th><th>20日累计</th><th>机制</th></tr></thead><tbody id="histBody"></tbody></table></div>
-    <p class="note">这里是“策略建议账本”，不是券商真实成交账本。默认预算口径可在 <code>data/config.json</code> 设置为 <code>recommended</code> 或 <code>outside_only</code>。</p>
+    <h2>国内ETF溢价与折后便宜度</h2>
+    <p class="note">本模块参考你原来的ETF监控页口径：腾讯行情取现价，Palmmicro三套EST优先，HaoETF作交叉验证。LOF已剔除，避免最低溢价被LOF误导。</p>
+    <section class="grid four" id="premiumCards"></section>
+    <div class="tablebox" style="margin-top:12px"><table><thead><tr><th>资产</th><th>代码</th><th>名称</th><th>现价</th><th>涨跌</th><th>采用溢价</th><th>溢价来源</th><th>折后便宜度</th><th>场内判断</th></tr></thead><tbody id="premiumBody"></tbody></table></div>
   </section>
+
+  <section class="section" style="margin-top:14px">
+    <h2>手动输入兜底计算</h2>
+    <p class="note">当 Twelve Data / ETF溢价接口异常，或你想盘中临时测算时，用这里。手动模式会用 <code>latest.json</code> 最近N-1个交易日 + 你输入的今日涨跌，重新计算阴跌补丁、大跌簇和预算上限。</p>
+    <div class="inputrow">
+      <div><label>纳指今日涨跌%</label><input id="mNdxPct" type="number" step="0.01" placeholder="例如 -1.20"></div>
+      <div><label>纳指最低场内溢价%</label><input id="mNdxPrem" type="number" step="0.01" placeholder="例如 0.80"></div>
+      <div><label>标普今日涨跌%</label><input id="mSpxPct" type="number" step="0.01" placeholder="例如 -0.65"></div>
+      <div><label>标普最低场内溢价%</label><input id="mSpxPrem" type="number" step="0.01" placeholder="例如 0.55"></div>
+    </div>
+    <div class="toolbar" style="margin-top:10px">
+      <button id="btnFillManual" class="secondary">用自动数据填入</button>
+      <button id="btnManual" class="warn">按手动输入计算</button>
+    </div>
+    <div id="manualResult" class="grid two"></div>
+  </section>
+
+  <section class="section" style="margin-top:14px">
+    <h2>压力机制状态与最近80个交易日建议记录</h2>
+    <div class="tablebox"><table><thead><tr><th>日期</th><th>资产</th><th>涨跌</th><th>场外建议</th><th>场内候选</th><th>预算计入</th><th>5日累计</th><th>10日累计</th><th>20日累计</th><th>≤-2%次数</th><th>机制</th></tr></thead><tbody id="histBody"></tbody></table></div>
+    <p class="note">这是“策略建议账本”，不是券商真实成交账本。场外金额按策略自动计入计划进度；场内候选是否执行，最终仍由溢价和折后便宜度决定。</p>
+  </section>
+
   <section class="section" style="margin-top:14px">
     <h2>策略理论与执行规则</h2>
-    <details open><summary>纳指100：固定5000基准 + 三项压力机制</summary>
-      <p>纳指保留固定5000基准的四档：≥+1.5% 买2500，-1%~+1.5% 买5000，-2%~-1% 买7000，≤-2% 为场外8000+场内4000候选。40年数据没有推翻5000基准，真正需要控制的是两类行情：连续阴跌时买得不够，连续暴跌时太快消耗弹药。</p>
-      <p><b>阴跌补丁：</b>近5日累计≤-3%，且5日内无单日≤-2%，则把原本5000/7000提升到场外8000；不涉及场内，不承担溢价风险。</p>
+    <details open><summary>1. 为什么 GitHub Actions 负责指数历史，前端负责溢价？</summary>
+      <p>指数5/10/20日累计涨跌、大跌簇、滚动预算需要连续历史数据，最适合由 GitHub Actions 每天早上自动生成 <code>data/latest.json</code>。国内ETF实时溢价更适合前端抓取，因为它需要盘中刷新，也便于在接口失败时手动输入。</p>
+    </details>
+    <details open><summary>2. 纳指100：固定5000基准 + 三项压力机制</summary>
+      <p>基础四档：≥+1.5% 买2500；-1%~+1.5% 买5000；-2%~-1% 买7000；≤-2% 买8000场外 + 4000场内候选。40年数据没有推翻5000基准，真正需要控制的是连续阴跌和连续暴跌。</p>
+      <p><b>阴跌补丁：</b>近5日累计≤-3%，且5日内无单日≤-2%，则把原本5000/7000提升到场外8000；不碰场内，不承担溢价风险。</p>
       <p><b>大跌簇：</b>近5日内第3次出现≤-2%，暂停场内4000候选，只保留场外8000。</p>
       <p><b>滚动预算：</b>5日4万 / 10日7万 / 20日14万；触发时优先削减场内候选。</p>
     </details>
-    <details open><summary>标普500：轻量化三机制</summary>
-      <p>标普波动低于纳指，场外2000固定不变。跌-1%~-2%时场内候选3000，跌-2%~-3%时场内候选8000，跌≤-3%时场内候选15000。</p>
-      <p><b>标普阴跌补丁：</b>近5日累计≤-3%，且5日内无单日≤-2%，总候选提升至5000，即场外2000+场内候选3000。</p>
-      <p><b>标普大跌簇：</b>近5日内第3次≤-2%，总候选降至5000。</p>
-      <p><b>标普滚动预算：</b>5日3万 / 10日5万 / 20日9万；主要用于限制场内大额候选。</p>
+    <details open><summary>3. 标普500：轻量版压力机制</summary>
+      <p>标普波动小于纳指，场外2000固定。跌-1%~-2%时场内候选3000；跌-2%~-3%时场内候选8000；跌≤-3%时场内候选15000。</p>
+      <p><b>阴跌补丁：</b>近5日累计≤-3%，且无单日≤-2%，总候选提升至5000，即场外2000+场内3000。</p>
+      <p><b>大跌簇：</b>近5日内第3次≤-2%，总候选降至5000。</p>
+      <p><b>滚动预算：</b>5日3万 / 10日5万 / 20日9万，主要限制场内大额候选。</p>
     </details>
-    <details><summary>为什么这个方案适合 GitHub Actions + Pages</summary>
-      <p>GitHub Pages 只能展示静态网页，不能长期运行Python；GitHub Actions 可以按计划自动运行Python脚本，生成 <code>data/latest.json</code> 后再部署到 Pages。这样既保留了网页的简单性，又获得了“每天自动计算”的后端能力。</p>
+    <details open><summary>4. 折后便宜度如何决定场内是否执行？</summary>
+      <p>公式：<code>折后便宜度 = 1 - (1 + 指数涨跌幅) × (1 + ETF溢价)</code>。例如指数跌2%，ETF溢价1%，折后便宜度约 +1.02%，说明跌幅足以覆盖溢价；如果指数跌1%，ETF溢价2%，折后便宜度约 -0.98%，说明并不便宜。</p>
+      <p>纳指场内4000候选要求：纳指≤-2%、最低溢价≤1.5%、折后便宜度&gt;0，且未被大跌簇/预算禁止。标普场内候选要求：最低溢价≤3%、折后便宜度&gt;0。</p>
     </details>
   </section>
 </main>
 <script>
-let DATA=null;
+let DATA=null, PREMIUM=null;
 const nameMap={ndx:'纳指100',spx:'标普500'};
+const assetLabel={ndx:'纳指',spx:'标普'};
+const ETF_DB={
+  ndx:[['159941','广发纳指100ETF'],['513300','华夏纳指100ETF'],['513100','国泰纳指100ETF'],['159501','嘉实纳指100ETF'],['159632','华安纳斯达克ETF'],['513390','博时纳指100ETF'],['159660','汇添富纳指100ETF'],['159659','招商纳斯达克100ETF'],['513110','华泰柏瑞纳指ETF'],['159696','易方达纳指100ETF'],['159513','大成纳斯达克100ETF'],['513870','富国纳指100ETF']],
+  spx:[['513500','博时标普500ETF'],['513650','南方标普500ETF'],['159612','国泰标普500ETF'],['159655','华夏标普500ETF']]
+};
+const ALL=[...ETF_DB.ndx.map(x=>['ndx',...x]),...ETF_DB.spx.map(x=>['spx',...x])];
 function fmt(n,d=0){if(n==null||isNaN(Number(n)))return'--';return Number(n).toLocaleString('zh-CN',{maximumFractionDigits:d,minimumFractionDigits:d})}
 function money(n){return fmt(n,0)}
 function pct(n){if(n==null||isNaN(Number(n)))return'--';return (Number(n)>=0?'+':'')+Number(n).toFixed(2)+'%'}
+function pctPlain(n){if(n==null||isNaN(Number(n)))return'--';return Number(n).toFixed(2)+'%'}
 function cls(n){return Number(n)>=0?'red':'green'}
-function pills(list){return (list&&list.length)?list.map(x=>`<span class="pill warn">${x}</span>`).join(''):'<span class="pill ok">常规</span>'}
-async function loadData(force=false){try{const url='data/latest.json'+(force?`?t=${Date.now()}`:''); const r=await fetch(url,{cache:'no-store'}); if(!r.ok)throw new Error('无法读取 data/latest.json'); DATA=await r.json(); render();}catch(e){document.getElementById('status').className='section err'; document.getElementById('status').textContent='加载失败：'+e.message+'。请先等待 GitHub Actions 跑完一次，或手动触发 Update ETF DCA Data。';}}
-function render(){document.getElementById('status').className='section okbox'; document.getElementById('status').innerHTML=`<b>数据已更新：</b>${DATA.generated_at_beijing}（北京时间）｜预算口径：<code>${DATA.config.budget_count_mode}</code><br><span class="note">数据源尝试结果可在 latest.json 中查看。若显示 source=seed，说明接口失败时使用了历史种子数据。</span>`;
-  const tops=[]; ['ndx','spx'].forEach(s=>{const obj=DATA.symbols[s];const d=obj.latest;const p=obj.progress;tops.push(`<div class="card"><div class="k">${nameMap[s]} 最新涨跌</div><div class="v ${cls(d.pct)}">${pct(d.pct)}</div><div class="s">${d.date} 收盘 ${fmt(d.close,2)}｜${obj.data_source}</div></div><div class="card"><div class="k">${nameMap[s]}计划剩余</div><div class="v blue">${money(p.remaining)}</div><div class="s">进度 ${fmt(p.progress_pct,1)}%，估算剩余 ${p.estimated_trading_days_left??'--'} 个交易日</div><div class="progress"><div class="bar" style="width:${Math.min(100,p.progress_pct)}%"></div></div></div>`)}); document.getElementById('topCards').innerHTML=tops.join('');
-  document.getElementById('decisionGrid').innerHTML=['ndx','spx'].map(s=>decisionCard(s,DATA.symbols[s])).join('');
-  const rows=[]; ['ndx','spx'].forEach(s=>{(DATA.symbols[s].recent_decisions||[]).slice().reverse().forEach(d=>{rows.push(`<tr><td>${d.date}</td><td>${nameMap[s]}</td><td class="${cls(d.pct)}">${pct(d.pct)}</td><td>${money(d.outside)}</td><td>${money(d.inside)}</td><td>${money(d.counted_amount)}</td><td class="${cls(d.windows.cum5)}">${pct(d.windows.cum5)}</td><td class="${cls(d.windows.cum10)}">${pct(d.windows.cum10)}</td><td class="${cls(d.windows.cum20)}">${pct(d.windows.cum20)}</td><td style="text-align:left">${pills(d.mechanisms)}</td></tr>`)});}); document.getElementById('histBody').innerHTML=rows.join('');}
-function decisionCard(s,obj){const d=obj.latest,w=d.windows,p=obj.progress;return `<div class="card"><h2>${nameMap[s]} 今日建议</h2><div class="grid three"><div><div class="k">场外建议</div><div class="v blue">${money(d.outside)}</div></div><div><div class="k">场内候选</div><div class="v amber">${money(d.inside)}</div></div><div><div class="k">预算计入</div><div class="v purple">${money(d.counted_amount)}</div></div></div><p>${pills(d.mechanisms)}</p><div class="tablebox"><table><tbody><tr><td>基础状态</td><td>${d.base_label}</td></tr><tr><td>5日累计</td><td class="${cls(w.cum5)}">${pct(w.cum5)}</td></tr><tr><td>10日累计</td><td class="${cls(w.cum10)}">${pct(w.cum10)}</td></tr><tr><td>20日累计</td><td class="${cls(w.cum20)}">${pct(w.cum20)}</td></tr><tr><td>5日≤-2%次数</td><td>${w.count_le2_5}</td></tr><tr><td>近20日均计入</td><td>${money(p.avg20_counted)}</td></tr></tbody></table></div><p class="note">${d.theory}</p></div>`}
-loadData();
+function premCls(n){if(n==null||isNaN(Number(n)))return''; if(Number(n)>3)return'rankbad'; if(Number(n)>=1)return'rank1'; if(Number(n)<-1)return'rankok'; return''}
+function pills(list){return (list&&list.length)?list.map(x=>`<span class="pill warn">${esc(x)}</span>`).join(''):'<span class="pill ok">常规</span>'}
+function esc(s){return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
+function setMini(text,kind='neu'){document.getElementById('miniStatus').className='pill '+kind;document.getElementById('miniStatus').textContent=text}
+function exch(code){return code[0]==='5'?'sh':'sz'}
+function _num(s){if(s==null)return null;const x=String(s).replace(/[,％%]/g,'').replace('+','').trim(); if(x==='-'||x===''||x==='--')return null; const n=parseFloat(x);return isNaN(n)?null:n}
+function cheapness(indexPct,premiumPct){if(indexPct==null||premiumPct==null||isNaN(indexPct)||isNaN(premiumPct))return null; return (1-(1+Number(indexPct)/100)*(1+Number(premiumPct)/100))*100}
+function applyInsideFilter(symbol, decision, premiumPct){let insideCandidate=Number(decision.inside||0);let outside=Number(decision.outside||0);let idxPct=Number(decision.pct);let ch=cheapness(idxPct,premiumPct);let ok=false, reason='';
+  if(insideCandidate<=0){ok=false;reason='无场内候选'}
+  else if(premiumPct==null||isNaN(Number(premiumPct))){ok=false;reason='缺少溢价，场内候选暂不执行'}
+  else if(symbol==='ndx'){
+    if(idxPct>-2){ok=false;reason='纳指未达到≤-2%，不执行场内'}
+    else if(Number(premiumPct)>1.5){ok=false;reason='纳指溢价>1.5%，不执行场内'}
+    else if(ch==null||ch<=0){ok=false;reason='折后便宜度≤0，不执行场内'}
+    else {ok=true;reason='纳指场内条件满足'}
+  }else{
+    if(Number(premiumPct)>3){ok=false;reason='标普溢价>3%，不执行场内'}
+    else if(ch==null||ch<=0){ok=false;reason='折后便宜度≤0，不执行场内'}
+    else {ok=true;reason='标普场内条件满足'}
+  }
+  const executableInside=ok?insideCandidate:0;
+  return {outside, insideCandidate, executableInside, finalTotal:outside+executableInside, cheapness:ch, ok, reason};
+}
+
+async function loadLatest(force=false){
+  const btn=document.getElementById('btnLatest'); btn.disabled=true; setMini('正在刷新 latest.json…','warn');
+  try{
+    const url=new URL('data/latest.json', window.location.href); url.searchParams.set('_', Date.now());
+    const r=await fetch(url.toString(), {cache:'no-store', headers:{'Cache-Control':'no-cache'}});
+    if(!r.ok) throw new Error('HTTP '+r.status);
+    DATA=await r.json();
+    renderAll(); setMini('latest.json已刷新 '+new Date().toLocaleTimeString('zh-CN',{hour12:false}),'ok');
+  }catch(e){
+    document.getElementById('status').className='section err';
+    document.getElementById('status').innerHTML='加载 latest.json 失败：'+esc(e.message)+'。请确认 Actions 已成功部署，或打开 data/latest.json 检查。';
+    setMini('latest.json刷新失败','bad');
+  }finally{btn.disabled=false;}
+}
+
+function renderAll(){ if(!DATA)return; renderStatus(); renderTop(); renderDecisions(); renderHistory(); if(PREMIUM) renderPremium(); }
+function renderStatus(){document.getElementById('status').className='section okbox'; document.getElementById('status').innerHTML=`<b>半后端数据已更新：</b>${esc(DATA.generated_at_beijing)}（北京时间）｜预算口径：<code>${esc(DATA.config.budget_count_mode)}</code><br><span class="note">指数数据源：纳指 ${esc(DATA.symbols.ndx.data_source)}，标普 ${esc(DATA.symbols.spx.data_source)}。点击“刷新页面数据”只会重新读取已生成的 latest.json 和前端ETF溢价；如需重新跑后端，请到 GitHub Actions 手动 Run workflow。</span>`;}
+function renderTop(){const tops=[]; ['ndx','spx'].forEach(s=>{const obj=DATA.symbols[s];const d=obj.latest;const p=obj.progress;const prem=PREMIUM?.summary?.[s];const filtered=applyInsideFilter(s,d,prem?.adoptedPremium);tops.push(`<div class="card"><div class="k">${nameMap[s]} 最新涨跌</div><div class="v ${cls(d.pct)}">${pct(d.pct)}</div><div class="s">${d.date} 收盘 ${fmt(d.close,2)}｜${esc(obj.data_source)}</div></div><div class="card"><div class="k">${nameMap[s]}今日最终可执行</div><div class="v blue">${money(filtered.finalTotal)}</div><div class="s">场外 ${money(filtered.outside)} + 场内 ${money(filtered.executableInside)}｜${esc(filtered.reason)}</div></div><div class="card"><div class="k">${nameMap[s]}计划剩余</div><div class="v blue">${money(p.remaining)}</div><div class="s">进度 ${fmt(p.progress_pct,1)}%，估算剩余 ${p.estimated_trading_days_left??'--'} 个交易日</div><div class="progress"><div class="bar" style="width:${Math.min(100,p.progress_pct)}%"></div></div></div><div class="card"><div class="k">${nameMap[s]}最低溢价 / 便宜度</div><div class="v ${filtered.cheapness>=0?'green':'amber'}">${prem?.adoptedPremium==null?'--':pctPlain(prem.adoptedPremium)} / ${filtered.cheapness==null?'--':pctPlain(filtered.cheapness)}</div><div class="s">${prem?esc(prem.code+' '+prem.name+'｜'+prem.premiumSource):'尚未刷新ETF溢价'}</div></div>`)}); document.getElementById('topCards').innerHTML=tops.join('');}
+function renderDecisions(){document.getElementById('decisionGrid').innerHTML=['ndx','spx'].map(s=>decisionCard(s,DATA.symbols[s])).join('');}
+function decisionCard(s,obj){const d=obj.latest,w=d.windows,p=obj.progress;const prem=PREMIUM?.summary?.[s];const filtered=applyInsideFilter(s,d,prem?.adoptedPremium);return `<div class="card"><h2>${nameMap[s]} 今日建议</h2><div class="grid four"><div><div class="k">场外建议</div><div class="v blue">${money(d.outside)}</div></div><div><div class="k">场内候选</div><div class="v amber">${money(d.inside)}</div></div><div><div class="k">场内可执行</div><div class="v ${filtered.executableInside>0?'green':'muted'}">${money(filtered.executableInside)}</div></div><div><div class="k">最终合计</div><div class="v purple">${money(filtered.finalTotal)}</div></div></div><p>${pills(d.mechanisms)} <span class="pill ${filtered.ok?'ok':'neu'}">${esc(filtered.reason)}</span></p><div class="tablebox"><table><tbody><tr><td>基础状态</td><td>${esc(d.base_label)}</td></tr><tr><td>5日累计</td><td class="${cls(w.cum5)}">${pct(w.cum5)}</td></tr><tr><td>10日累计</td><td class="${cls(w.cum10)}">${pct(w.cum10)}</td></tr><tr><td>20日累计</td><td class="${cls(w.cum20)}">${pct(w.cum20)}</td></tr><tr><td>5日≤-2%次数</td><td>${w.count_le2_5}</td></tr><tr><td>滚动预算前值 5/10/20</td><td>${money(d.rolling_before?.['5'])} / ${money(d.rolling_before?.['10'])} / ${money(d.rolling_before?.['20'])}</td></tr><tr><td>最低溢价/便宜度</td><td>${prem?.adoptedPremium==null?'--':pctPlain(prem.adoptedPremium)} / ${filtered.cheapness==null?'--':pctPlain(filtered.cheapness)}</td></tr></tbody></table></div><p class="note">${esc(d.theory)}</p></div>`}
+function renderHistory(){const rows=[]; ['ndx','spx'].forEach(s=>{(DATA.symbols[s].recent_decisions||[]).slice().reverse().forEach(d=>{rows.push(`<tr><td>${d.date}</td><td>${nameMap[s]}</td><td class="${cls(d.pct)}">${pct(d.pct)}</td><td>${money(d.outside)}</td><td>${money(d.inside)}</td><td>${money(d.counted_amount)}</td><td class="${cls(d.windows.cum5)}">${pct(d.windows.cum5)}</td><td class="${cls(d.windows.cum10)}">${pct(d.windows.cum10)}</td><td class="${cls(d.windows.cum20)}">${pct(d.windows.cum20)}</td><td>${d.windows.count_le2_5}</td><td class="left">${pills(d.mechanisms)}</td></tr>`)});}); document.getElementById('histBody').innerHTML=rows.join('');}
+
+function loadScript(url,timeout=9000){return new Promise(resolve=>{const s=document.createElement('script');let done=false;const finish=()=>{if(done)return;done=true;clearTimeout(tid);s.remove();resolve(true)};s.onload=finish;s.onerror=finish;const tid=setTimeout(finish,timeout);s.src=url;document.head.appendChild(s);});}
+async function fetchQt(){const syms=ALL.map(x=>exch(x[1])+x[1]).join(','); await loadScript(`https://qt.gtimg.cn/q=${syms}&r=${Date.now()}`,9000); const out={}; ALL.forEach(([asset,code,name])=>{const key='v_'+exch(code)+code;const raw=window[key];delete window[key]; if(!raw)return; const p=raw.split('~'); const price=_num(p[3]), prev=_num(p[4]), amount=_num(p[37]); if(price&&prev){out[code]={asset,code,name,price,pct:(price/prev-1)*100,amount}}}); return out;}
+async function fetchTextAny(urls,timeout=14000){let lastErr=null;for(const url of urls){const ctrl=new AbortController();const tid=setTimeout(()=>ctrl.abort(),timeout);try{const res=await fetch(url,{cache:'no-store',signal:ctrl.signal});clearTimeout(tid);if(!res.ok)throw new Error('HTTP '+res.status);const txt=await res.text();if(txt&&txt.length>20)return txt;}catch(e){clearTimeout(tid);lastErr=e;}}throw lastErr||new Error('文本获取失败')}
+function parseHaoHomeText(text){const map={};const wanted=new Set(ALL.map(x=>x[1]));let clean=String(text).replace(/【\d+†([^】]+)】/g,(m,a)=>String(a).split('†')[0]).replace(/\[([^\]]+)\]\([^)]*\)/g,'$1').replace(/\^\{[^}]+\}/g,'').replace(/&nbsp;/g,' ').replace(/\u00a0/g,' ');clean.split(/\n+/).forEach(line=>{const raw=line.replace(/\|/g,' ').replace(/\s+/g,' ').trim();const m=raw.match(/^(\d{6})\s+(\S+)\s+(.+)$/);if(!m)return;const code=m[1];if(!wanted.has(code))return;const a=m[3].split(' ');if(a.length<14)return;map[code]={realEst:_num(a[0]),realPrem:_num(a[1]),latestEst:_num(a[2]),latPrem:_num(a[3]),source:'HaoETF'};});return map;}
+async function fetchHao(){try{return parseHaoHomeText(await fetchTextAny([`https://r.jina.ai/https://www.haoetf.com/`,`https://api.allorigins.win/raw?url=${encodeURIComponent('https://www.haoetf.com/')}`],14000));}catch(e){console.warn('HaoETF失败',e);return {}}}
+function parsePalmmicroText(text){const out={};const wanted=new Set(ALL.map(x=>x[1]));let clean=String(text).replace(/【\d+†([^】]+)】/g,(m,a)=>String(a).split('†').pop()).replace(/\[([^\]]+)\]\([^)]*\)/g,'$1').replace(/&nbsp;/g,' ').replace(/ /g,' ');clean.split(/\n+/).forEach(line=>{let raw=line.replace(/\|/g,' ').replace(/\s+/g,' ').trim();const m=raw.match(/^(SH|SZ)?\s*(\d{6})\s*([0-9]+(?:\.[0-9]+)?)\s+(\d{4}-\d{2}-\d{2})\s*([+\-]?\d+(?:\.\d+)?%|0)(?:\s*([0-9]+(?:\.[0-9]+)?)\s*([+\-]?\d+(?:\.\d+)?%|0))?(?:\s*([0-9]+(?:\.[0-9]+)?)\s*([+\-]?\d+(?:\.\d+)?%|0))?/);if(!m)return;const code=m[2];if(!wanted.has(code))return;out[code]={pmOfficialEst:_num(m[3]),pmEstDate:m[4],pmOfficialPrem:_num(m[5]),pmRefEst:_num(m[6]),pmRefPrem:_num(m[7]),pmLiveEst:_num(m[8]),pmLivePrem:_num(m[9]),source:'Palmmicro'};});return out;}
+async function fetchPm(){const PM='https://palmmicro.com/woody/res/qdiicn.php';try{return parsePalmmicroText(await fetchTextAny([`https://r.jina.ai/${PM}`,`https://api.allorigins.win/raw?url=${encodeURIComponent(PM)}`],14000));}catch(e){console.warn('Palmmicro失败',e);return {}}}
+function choosePremium(row){const candidates=[['PM实时',row.pmLivePrem],['PM参考',row.pmRefPrem],['Hao实时',row.realPrem],['Hao最新',row.latPrem],['PM官方',row.pmOfficialPrem]];for(const [source,val] of candidates){if(val!=null&&!isNaN(Number(val)))return {premium:Number(val),source};}return {premium:null,source:'--'};}
+async function refreshPremium(){const btn=document.getElementById('btnPremium'); btn.disabled=true; setMini('正在刷新ETF溢价…','warn'); try{const [qt,hao,pm]=await Promise.all([fetchQt(),fetchHao(),fetchPm()]); const rows=[]; ALL.forEach(([asset,code,name])=>{const r={asset,code,name,...(qt[code]||{}),...(hao[code]||{}),...(pm[code]||{})}; if(r.price&&r.pmOfficialEst)r.pmOfficialPrem=(r.price/r.pmOfficialEst-1)*100; if(r.price&&r.pmRefEst)r.pmRefPrem=(r.price/r.pmRefEst-1)*100; if(r.price&&r.pmLiveEst)r.pmLivePrem=(r.price/r.pmLiveEst-1)*100; const ch=choosePremium(r); r.adoptedPremium=ch.premium; r.premiumSource=ch.source; const idxPct=DATA?.symbols?.[asset]?.latest?.pct; r.cheapness=cheapness(idxPct,r.adoptedPremium); rows.push(r);}); const summary={}; ['ndx','spx'].forEach(asset=>{const rs=rows.filter(r=>r.asset===asset&&r.adoptedPremium!=null).sort((a,b)=>a.adoptedPremium-b.adoptedPremium); summary[asset]=rs[0]||null;}); PREMIUM={rows,summary,updatedAt:new Date().toLocaleString('zh-CN',{hour12:false})}; renderAll(); renderPremium(); setMini('ETF溢价已刷新 '+new Date().toLocaleTimeString('zh-CN',{hour12:false}),'ok');}catch(e){setMini('ETF溢价刷新失败','bad'); console.error(e);}finally{btn.disabled=false;}}
+function renderPremium(){if(!PREMIUM){document.getElementById('premiumCards').innerHTML='<div class="card"><div class="k">ETF溢价</div><div class="v muted">未刷新</div><div class="s">点击“刷新ETF溢价”</div></div>';return;} const cards=[]; ['ndx','spx'].forEach(asset=>{const r=PREMIUM.summary[asset];const latest=DATA?.symbols?.[asset]?.latest;const filtered=applyInsideFilter(asset,latest||{},r?.adoptedPremium);cards.push(`<div class="card"><div class="k">${nameMap[asset]}最低ETF溢价</div><div class="v ${r?.adoptedPremium<=0?'green':'amber'}">${r?pctPlain(r.adoptedPremium):'--'}</div><div class="s">${r?esc(r.code+' '+r.name+'｜'+r.premiumSource):'无数据'}</div></div><div class="card"><div class="k">${nameMap[asset]}折后便宜度</div><div class="v ${filtered.cheapness>0?'green':'amber'}">${filtered.cheapness==null?'--':pctPlain(filtered.cheapness)}</div><div class="s">${esc(filtered.reason)}</div></div>`)}); document.getElementById('premiumCards').innerHTML=cards.join(''); const body=(PREMIUM.rows||[]).sort((a,b)=>(a.asset===b.asset?(a.adoptedPremium??999)-(b.adoptedPremium??999):a.asset.localeCompare(b.asset))).map(r=>{const d=DATA?.symbols?.[r.asset]?.latest||{};const filtered=applyInsideFilter(r.asset,d,r.adoptedPremium);return `<tr class="${premCls(r.adoptedPremium)}"><td>${assetLabel[r.asset]}</td><td>${r.code}</td><td>${esc(r.name)}</td><td>${fmt(r.price,4)}</td><td class="${cls(r.pct)}">${pct(r.pct)}</td><td>${r.adoptedPremium==null?'--':pctPlain(r.adoptedPremium)}</td><td>${esc(r.premiumSource)}</td><td class="${filtered.cheapness>0?'green':'amber'}">${filtered.cheapness==null?'--':pctPlain(filtered.cheapness)}</td><td>${esc(filtered.reason)}</td></tr>`}).join(''); document.getElementById('premiumBody').innerHTML=body;}
+
+function recentPcts(symbol, nMinus1){const xs=(DATA?.symbols?.[symbol]?.recent_decisions||[]).filter(d=>!d.pre_plan_observation); const base=xs.length?xs:(DATA?.symbols?.[symbol]?.recent_decisions||[]); return base.slice(-nMinus1).map(d=>Number(d.pct));}
+function compound(pcts){let v=1; for(const p of pcts){v*=1+Number(p)/100} return (v-1)*100;}
+function jsBase(symbol,pctVal){const cfg=DATA.config.rules[symbol]; if(symbol==='ndx'){ if(pctVal>=1.5)return{outside:cfg.up_big,inside:0,base_label:'大涨少投'}; if(pctVal<=-2)return{outside:cfg.down_big_outside,inside:cfg.down_big_inside_candidate,base_label:'大跌：场外8000+场内候选4000'}; if(pctVal<=-1)return{outside:cfg.down_medium,inside:0,base_label:'有效回调'}; return{outside:cfg.base,inside:0,base_label:'正常基准'};} else { if(pctVal<=-3)return{outside:cfg.outside_fixed,inside:cfg.inside_down_3,base_label:'标普极端大跌'}; if(pctVal<=-2)return{outside:cfg.outside_fixed,inside:cfg.inside_down_2,base_label:'标普大跌'}; if(pctVal<=-1)return{outside:cfg.outside_fixed,inside:cfg.inside_down_1,base_label:'标普有效回调'}; return{outside:cfg.outside_fixed,inside:0,base_label:'标普固定场外'};}}
+function rollingBefore(symbol, days){const xs=(DATA?.symbols?.[symbol]?.recent_decisions||[]).filter(d=>!d.pre_plan_observation).slice(-(days-1)); return xs.reduce((s,d)=>s+Number(d.counted_amount||0),0)}
+function manualDecision(symbol,pctVal,premVal){const cfg=DATA.config; let rec=jsBase(symbol,pctVal); const mechanisms=[]; const pcts5=[...recentPcts(symbol,4),pctVal]; const pcts10=[...recentPcts(symbol,9),pctVal]; const pcts20=[...recentPcts(symbol,19),pctVal]; const cum5=compound(pcts5), cum10=compound(pcts10), cum20=compound(pcts20); const countLe2=pcts5.filter(x=>x<=-2).length; const noLe2=countLe2===0; if(symbol==='ndx'){const r=cfg.rules.ndx; if(pcts5.length>=5&&cum5<=r.yin_die_5d_threshold_pct&&noLe2&&rec.outside+rec.inside<8000){rec.outside=8000;rec.inside=0;mechanisms.push('阴跌补丁：提升至场外8000')} if(pctVal<=r.big_down_threshold_pct&&countLe2>=3&&rec.inside>0){rec.inside=0;mechanisms.push('大跌簇：暂停场内4000')} for(const [d,cap] of Object.entries(r.budget_caps)){const prev=rollingBefore(symbol,Number(d)); if(prev+rec.outside+rec.inside>cap&&rec.inside>0){rec.inside=0;mechanisms.push(`${d}日预算上限${cap}：削减场内候选`)}}} else {const r=cfg.rules.spx; if(pcts5.length>=5&&cum5<=r.yin_die_5d_threshold_pct&&noLe2&&rec.outside+rec.inside<r.yin_die_total_candidate){rec.inside=Math.max(0,r.yin_die_total_candidate-rec.outside);mechanisms.push('标普阴跌补丁：总候选提升至5000')} if(pctVal<=r.big_down_threshold_pct&&countLe2>=3&&rec.outside+rec.inside>r.big_down_cluster_total_candidate){rec.inside=Math.max(0,r.big_down_cluster_total_candidate-rec.outside);mechanisms.push('标普大跌簇：总候选降至5000')} for(const [d,cap] of Object.entries(r.budget_caps)){const prev=rollingBefore(symbol,Number(d)); if(prev+rec.outside+rec.inside>cap&&rec.inside>0){rec.inside=Math.max(0,r.yin_die_total_candidate-rec.outside);mechanisms.push(`${d}日预算上限${cap}：削减大额场内候选`)}}}
+  const decision={symbol,pct:pctVal,outside:rec.outside,inside:rec.inside,base_label:rec.base_label,mechanisms,windows:{cum5,cum10,cum20,count_le2_5:countLe2}}; const filtered=applyInsideFilter(symbol,decision,premVal); return {decision,filtered};}
+function manualCard(symbol,pctVal,premVal){const {decision:d,filtered:f}=manualDecision(symbol,pctVal,premVal);return `<div class="card"><h3>${nameMap[symbol]}手动计算</h3><div class="grid four"><div><div class="k">场外</div><div class="v blue">${money(d.outside)}</div></div><div><div class="k">场内候选</div><div class="v amber">${money(d.inside)}</div></div><div><div class="k">场内可执行</div><div class="v ${f.executableInside>0?'green':'muted'}">${money(f.executableInside)}</div></div><div><div class="k">最终合计</div><div class="v purple">${money(f.finalTotal)}</div></div></div><p>${pills(d.mechanisms)} <span class="pill ${f.ok?'ok':'neu'}">${esc(f.reason)}</span></p><div class="tablebox"><table><tbody><tr><td>今日涨跌</td><td class="${cls(pctVal)}">${pct(pctVal)}</td></tr><tr><td>手动溢价</td><td>${pctPlain(premVal)}</td></tr><tr><td>折后便宜度</td><td class="${f.cheapness>0?'green':'amber'}">${f.cheapness==null?'--':pctPlain(f.cheapness)}</td></tr><tr><td>5/10/20日累计</td><td>${pct(d.windows.cum5)} / ${pct(d.windows.cum10)} / ${pct(d.windows.cum20)}</td></tr><tr><td>5日≤-2%次数</td><td>${d.windows.count_le2_5}</td></tr></tbody></table></div></div>`}
+function runManual(){if(!DATA){alert('请先加载 latest.json');return} const ndxPct=Number(document.getElementById('mNdxPct').value), ndxPrem=Number(document.getElementById('mNdxPrem').value), spxPct=Number(document.getElementById('mSpxPct').value), spxPrem=Number(document.getElementById('mSpxPrem').value); const parts=[]; if(!isNaN(ndxPct))parts.push(manualCard('ndx',ndxPct,isNaN(ndxPrem)?null:ndxPrem)); if(!isNaN(spxPct))parts.push(manualCard('spx',spxPct,isNaN(spxPrem)?null:spxPrem)); document.getElementById('manualResult').innerHTML=parts.length?parts.join(''):'<div class="card err">请至少输入一个指数涨跌幅。</div>';}
+function fillManual(){if(DATA){document.getElementById('mNdxPct').value=DATA.symbols.ndx.latest.pct; document.getElementById('mSpxPct').value=DATA.symbols.spx.latest.pct;} if(PREMIUM){document.getElementById('mNdxPrem').value=PREMIUM.summary.ndx?.adoptedPremium??''; document.getElementById('mSpxPrem').value=PREMIUM.summary.spx?.adoptedPremium??'';}}
+async function refreshAll(){document.getElementById('btnAll').disabled=true;setMini('正在刷新全部…','warn'); await loadLatest(true); await refreshPremium(); document.getElementById('btnAll').disabled=false;}
+document.getElementById('btnLatest').addEventListener('click',()=>loadLatest(true));
+document.getElementById('btnPremium').addEventListener('click',refreshPremium);
+document.getElementById('btnAll').addEventListener('click',refreshAll);
+document.getElementById('btnManual').addEventListener('click',runManual);
+document.getElementById('btnFillManual').addEventListener('click',fillManual);
+loadLatest(true).then(()=>refreshPremium());
 </script>
 </body>
 </html>

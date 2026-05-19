@@ -1,65 +1,26 @@
-# 标普/纳指智能定投执行器 · GitHub Actions + GitHub Pages 半后端版
+# 标普/纳指智能定投执行器 · GitHub Actions + GitHub Pages 增强版 v2
 
-## 作用
+## v2 相比 v1 改了什么
 
-- GitHub Actions 每天自动运行 `scripts/update_data.py`。
-- Python 脚本自动抓取纳斯达克100与标普500最新日线数据。
-- 自动计算 5/10/20 日累计涨跌、阴跌补丁、大跌簇、滚动预算。
-- 自动生成 `data/latest.json`。
-- GitHub Pages 展示 `index.html`。
+1. 修复“刷新页面数据”体验：按钮现在会明确显示刷新状态，并用 cache bust 重新读取 `data/latest.json`。
+2. 恢复国内ETF溢价模块：前端抓腾讯行情、Palmmicro三EST、HaoETF快照，LOF已剔除。
+3. 增加折后便宜度：`1 - (1 + 指数涨跌幅) × (1 + ETF溢价)`。
+4. 增加最终可执行金额：区分“场内候选”和“经溢价过滤后可执行的场内金额”。
+5. 增加手动输入兜底计算：当指数/ETF接口异常时，可以手动填涨跌幅和最低溢价计算。
+6. 完整保留阴跌补丁、大跌簇、滚动预算上限的理论说明和可视化状态。
 
-## 文件结构
+## 部署方法
 
-```text
-.github/workflows/update-data.yml   # 自动更新 + 部署 Pages
-data/config.json                    # 目标仓位、预算口径、策略参数
-data/ndx_history.csv                # 纳指1986-2026历史种子数据
-data/spx_history.csv                # 标普1986-2026历史种子数据
-scripts/update_data.py              # 半后端数据生成器
-index.html                          # 静态网页
-requirements.txt                    # Python依赖
-```
+把本包所有内容上传到你的 GitHub 仓库根目录，覆盖原来的 v1 文件即可。然后手动运行一次：
 
-## 必须配置的 GitHub Secret
+`Actions → Update ETF DCA Data → Run workflow`
 
-在仓库 Settings → Secrets and variables → Actions → New repository secret 新增：
+GitHub Pages 仍然选择：
 
-```text
-TWELVE_DATA_API_KEY = 你的 Twelve Data API Key
-```
+`Settings → Pages → Source → GitHub Actions`
 
-不要把 API Key 直接写进代码。
+## 注意
 
-## 页面部署设置
-
-仓库 Settings → Pages → Build and deployment：
-
-```text
-Source: GitHub Actions
-```
-
-## 手动触发
-
-Actions → Update ETF DCA Data → Run workflow。
-
-## 修改目标金额
-
-编辑 `data/config.json`：
-
-```json
-"targets": {
-  "ndx": {"current_cost_at_start": 285500, "target_cost": 1330000},
-  "spx": {"current_cost_at_start": 951600, "target_cost": 1620000}
-}
-```
-
-金额单位是人民币元。
-
-## 预算口径
-
-`budget_count_mode` 有两个选项：
-
-- `recommended`：预算按“场外建议 + 场内候选”计入，偏保守。
-- `outside_only`：预算只按场外建议计入，适合场内很少实际买入的情况。
-
-默认使用 `recommended`。
+- “刷新页面数据”不会触发 GitHub Actions 重新跑后端，只是重新读取已经生成并部署的 `data/latest.json`。
+- 如需重新抓取 Twelve Data / Yahoo 并生成最新后端数据，请进入 GitHub Actions 手动 Run workflow，或等待每日定时任务。
+- 国内ETF溢价是前端实时抓取，可能受跨域代理影响；失败时请用“手动输入兜底计算”。
