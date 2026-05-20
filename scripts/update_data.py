@@ -366,30 +366,65 @@ def decide_one(symbol: str, history: List[Dict[str, Any]], idx: int, cfg: Dict[s
     return decision
 
 
-def build_decisions(symbol: str, history: List[Dict[str, Any]], cfg: Dict[str, Any]) -> List[Dict[str, Any]]:
+def build_plan_decisions(symbol: str, history: List[Dict[str, Any]], cfg: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """
+    构建“计划账本”：只从 plan_start_date 之后开始计入仓位进度和预算。
+    这个列表用于 progress 计算；不是页面里的近80日展示列表。
+    """
     start = cfg.get("plan_start_date", "2026-05-20")
     decisions: List[Dict[str, Any]] = []
     for idx, row in enumerate(history):
         if row["date"] < start:
             continue
-        decisions.append(decide_one(symbol, history, idx, cfg, decisions))
-    # 如果计划开始日晚于历史最后一天，也仍然给出最后一天观察建议，但不计入计划记录。
+        d = decide_one(symbol, history, idx, cfg, decisions)
+        d["counted_in_plan"] = True
+        decisions.append(d)
+    # 如果计划开始日晚于历史最后一天，也仍然给出最后一天观察建议，但不计入计划进度。
     if not decisions and history:
         idx = len(history) - 1
         d = decide_one(symbol, history, idx, cfg, [])
         d["pre_plan_observation"] = True
+        d["counted_in_plan"] = False
         return [d]
     return decisions
+
+
+def build_display_decisions(symbol: str, history: List[Dict[str, Any]], cfg: Dict[str, Any], n: int = 80) -> List[Dict[str, Any]]:
+    """
+    构建页面展示用的“最近N个交易日建议记录”。
+
+    v2 的问题是 recent_decisions 直接取自计划账本；如果 plan_start_date 是今天，
+    页面就只能看到今天一条。这里改为：无论计划从哪天开始，都回溯计算最近N个
+    交易日的策略建议，并用 counted_in_plan 标记是否计入仓位进度。
+
+    为了让滚动预算在展示区间开头也有足够上下文，实际会从最近 max(n+40, 140)
+    个交易日开始预热，最后只返回最近N个。
+    """
+    if not history:
+        return []
+    start = cfg.get("plan_start_date", "2026-05-20")
+    warm_n = max(n + 40, 140)
+    start_idx = max(0, len(history) - warm_n)
+    decisions: List[Dict[str, Any]] = []
+    for idx in range(start_idx, len(history)):
+        row = history[idx]
+        d = decide_one(symbol, history, idx, cfg, decisions)
+        d["counted_in_plan"] = row["date"] >= start
+        if not d["counted_in_plan"]:
+            d["display_only"] = True
+        decisions.append(d)
+    return decisions[-n:]
 
 
 def progress(symbol: str, decisions: List[Dict[str, Any]], cfg: Dict[str, Any]) -> Dict[str, Any]:
     t = cfg["targets"][symbol]
     start_cost = float(t["current_cost_at_start"])
     target_cost = float(t["target_cost"])
-    counted = sum(float(d.get("counted_amount", 0) or 0) for d in decisions if not d.get("pre_plan_observation"))
+    plan_items = [d for d in decisions if d.get("counted_in_plan") is not False and not d.get("pre_plan_observation")]
+    counted = sum(float(d.get("counted_amount", 0) or 0) for d in plan_items)
     current_plan_cost = start_cost + counted
     remaining = max(0.0, target_cost - current_plan_cost)
-    recent = [d for d in decisions if not d.get("pre_plan_observation")][-20:]
+    recent = plan_items[-20:]
     avg20 = sum(float(d.get("counted_amount", 0) or 0) for d in recent) / len(recent) if recent else 0.0
     return {
         "start_cost": start_cost,
@@ -423,8 +458,9 @@ def update_symbol(symbol: str, cfg: Dict[str, Any], api_key: str) -> Dict[str, A
             source = "seed"
     history = merge_recent(seed, recent)
     # 为了页面加载速度，只写入最近几年合并历史；源 CSV 不回写，避免 Actions artifact 与仓库状态混淆。
-    decisions = build_decisions(symbol, history, cfg)
-    latest = decisions[-1]
+    plan_decisions = build_plan_decisions(symbol, history, cfg)
+    display_decisions = build_display_decisions(symbol, history, cfg, n=80)
+    latest = plan_decisions[-1] if plan_decisions else (display_decisions[-1] if display_decisions else None)
     return {
         "symbol": symbol,
         "name": info["display"],
@@ -432,8 +468,9 @@ def update_symbol(symbol: str, cfg: Dict[str, Any], api_key: str) -> Dict[str, A
         "attempts": attempts,
         "history_last_date": history[-1]["date"] if history else None,
         "latest": latest,
-        "recent_decisions": decisions[-80:],
-        "progress": progress(symbol, decisions, cfg),
+        "recent_decisions": display_decisions,
+        "plan_decisions_count": len([d for d in plan_decisions if d.get("counted_in_plan") is not False and not d.get("pre_plan_observation")]),
+        "progress": progress(symbol, plan_decisions, cfg),
     }
 
 
