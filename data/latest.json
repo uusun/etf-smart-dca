@@ -1,6 +1,6 @@
 {
-  "generated_at_beijing": "2026-07-30 07:33:26",
-  "generated_at_utc": "2026-07-29 23:33:26",
+  "generated_at_beijing": "2026-07-30 08:53:56",
+  "generated_at_utc": "2026-07-30 00:53:56",
   "config": {
     "plan_start_date": "2026-05-20",
     "budget_count_mode": "recommended",
@@ -64,8 +64,8 @@
       "latest": {
         "date": "2026-07-29",
         "symbol": "ndx",
-        "close": 661.63,
-        "pct": -2.0518,
+        "close": 661.73,
+        "pct": -2.037,
         "outside": 8000.0,
         "inside": 4000.0,
         "total_candidate": 12000.0,
@@ -73,9 +73,9 @@
         "base_label": "大跌：场外8000+场内候选4000",
         "mechanisms": [],
         "windows": {
-          "cum5": -6.1983,
-          "cum10": -7.8175,
-          "cum20": -10.1536,
+          "cum5": -6.1841,
+          "cum10": -7.8036,
+          "cum20": -10.14,
           "count_le2_5": 1,
           "days5": 5,
           "days10": 10,
@@ -2343,8 +2343,8 @@
         {
           "date": "2026-07-29",
           "symbol": "ndx",
-          "close": 661.63,
-          "pct": -2.0518,
+          "close": 661.73,
+          "pct": -2.037,
           "outside": 8000.0,
           "inside": 4000.0,
           "total_candidate": 12000.0,
@@ -2352,9 +2352,9 @@
           "base_label": "大跌：场外8000+场内候选4000",
           "mechanisms": [],
           "windows": {
-            "cum5": -6.1983,
-            "cum10": -7.8175,
-            "cum20": -10.1536,
+            "cum5": -6.1841,
+            "cum10": -7.8036,
+            "cum20": -10.14,
             "count_le2_5": 1,
             "days5": 5,
             "days10": 10,
