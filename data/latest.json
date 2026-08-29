@@ -1,6 +1,6 @@
 {
-  "generated_at_beijing": "2026-08-29 11:49:42",
-  "generated_at_utc": "2026-08-29 03:49:42",
+  "generated_at_beijing": "2026-08-29 12:16:09",
+  "generated_at_utc": "2026-08-29 04:16:09",
   "config": {
     "plan_start_date": "2026-05-20",
     "budget_count_mode": "recommended",
@@ -2375,8 +2375,8 @@
       "latest": {
         "date": "2026-08-28",
         "symbol": "spx",
-        "close": 769.35,
-        "pct": -0.2269,
+        "close": 769.38,
+        "pct": -0.2231,
         "outside": 2000.0,
         "inside": 0.0,
         "total_candidate": 2000.0,
@@ -2384,9 +2384,9 @@
         "base_label": "标普固定场外",
         "mechanisms": [],
         "windows": {
-          "cum5": 0.4742,
-          "cum10": -0.9003,
-          "cum20": 2.9879,
+          "cum5": 0.478,
+          "cum10": -0.8965,
+          "cum20": 2.9918,
           "count_le2_5": 0,
           "days5": 5,
           "days10": 10,
@@ -4626,8 +4626,8 @@
         {
           "date": "2026-08-28",
           "symbol": "spx",
-          "close": 769.35,
-          "pct": -0.2269,
+          "close": 769.38,
+          "pct": -0.2231,
           "outside": 2000.0,
           "inside": 0.0,
           "total_candidate": 2000.0,
@@ -4635,9 +4635,9 @@
           "base_label": "标普固定场外",
           "mechanisms": [],
           "windows": {
-            "cum5": 0.4742,
-            "cum10": -0.9003,
-            "cum20": 2.9879,
+            "cum5": 0.478,
+            "cum10": -0.8965,
+            "cum20": 2.9918,
             "count_le2_5": 0,
             "days5": 5,
             "days10": 10,
