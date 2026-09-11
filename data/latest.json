@@ -1,6 +1,6 @@
 {
-  "generated_at_beijing": "2026-09-10 09:18:31",
-  "generated_at_utc": "2026-09-10 01:18:31",
+  "generated_at_beijing": "2026-09-11 08:26:50",
+  "generated_at_utc": "2026-09-11 00:26:50",
   "config": {
     "plan_start_date": "2026-05-20",
     "budget_count_mode": "recommended",
@@ -60,22 +60,22 @@
           "ok": true
         }
       ],
-      "history_last_date": "2026-09-09",
+      "history_last_date": "2026-09-10",
       "latest": {
-        "date": "2026-09-09",
+        "date": "2026-09-10",
         "symbol": "ndx",
-        "close": 716.31,
-        "pct": -0.2854,
-        "outside": 5000.0,
+        "close": 708.69,
+        "pct": -1.0638,
+        "outside": 7000.0,
         "inside": 0.0,
-        "total_candidate": 5000.0,
-        "counted_amount": 5000.0,
-        "base_label": "正常基准",
+        "total_candidate": 7000.0,
+        "counted_amount": 7000.0,
+        "base_label": "有效回调",
         "mechanisms": [],
         "windows": {
-          "cum5": 1.2252,
-          "cum10": 0.7866,
-          "cum20": -0.2978,
+          "cum5": -0.0776,
+          "cum10": -0.3767,
+          "cum20": -2.074,
           "count_le2_5": 0,
           "days5": 5,
           "days10": 10,
@@ -90,35 +90,6 @@
         "counted_in_plan": true
       },
       "recent_decisions": [
-        {
-          "date": "2026-05-15",
-          "symbol": "ndx",
-          "close": 708.93,
-          "pct": -1.5088,
-          "outside": 7000.0,
-          "inside": 0.0,
-          "total_candidate": 7000.0,
-          "counted_amount": 7000.0,
-          "base_label": "有效回调",
-          "mechanisms": [],
-          "windows": {
-            "cum5": -0.3235,
-            "cum10": 5.159,
-            "cum20": 9.2593,
-            "count_le2_5": 0,
-            "days5": 5,
-            "days10": 10,
-            "days20": 20
-          },
-          "rolling_before": {
-            "5": 20000.0,
-            "10": 40000.0,
-            "20": 87000.0
-          },
-          "theory": "纳指固定5000基准四档；阴跌补丁补火力，大跌簇和滚动预算保弹药。",
-          "counted_in_plan": false,
-          "display_only": true
-        },
         {
           "date": "2026-05-18",
           "symbol": "ndx",
@@ -2340,18 +2311,46 @@
           },
           "theory": "纳指固定5000基准四档；阴跌补丁补火力，大跌簇和滚动预算保弹药。",
           "counted_in_plan": true
+        },
+        {
+          "date": "2026-09-10",
+          "symbol": "ndx",
+          "close": 708.69,
+          "pct": -1.0638,
+          "outside": 7000.0,
+          "inside": 0.0,
+          "total_candidate": 7000.0,
+          "counted_amount": 7000.0,
+          "base_label": "有效回调",
+          "mechanisms": [],
+          "windows": {
+            "cum5": -0.0776,
+            "cum10": -0.3767,
+            "cum20": -2.074,
+            "count_le2_5": 0,
+            "days5": 5,
+            "days10": 10,
+            "days20": 20
+          },
+          "rolling_before": {
+            "5": 20000.0,
+            "10": 47000.0,
+            "20": 102000.0
+          },
+          "theory": "纳指固定5000基准四档；阴跌补丁补火力，大跌簇和滚动预算保弹药。",
+          "counted_in_plan": true
         }
       ],
-      "plan_decisions_count": 77,
+      "plan_decisions_count": 78,
       "progress": {
         "start_cost": 285500.0,
         "target_cost": 1330000.0,
-        "planned_counted_since_start": 413500.0,
-        "current_plan_cost": 699000.0,
-        "remaining": 631000.0,
-        "progress_pct": 52.56,
-        "avg20_counted": 5350.0,
-        "estimated_trading_days_left": 118
+        "planned_counted_since_start": 420500.0,
+        "current_plan_cost": 706000.0,
+        "remaining": 624000.0,
+        "progress_pct": 53.08,
+        "avg20_counted": 5450.0,
+        "estimated_trading_days_left": 115
       }
     },
     "spx": {
@@ -2364,12 +2363,12 @@
           "ok": true
         }
       ],
-      "history_last_date": "2026-09-09",
+      "history_last_date": "2026-09-10",
       "latest": {
-        "date": "2026-09-09",
+        "date": "2026-09-10",
         "symbol": "spx",
-        "close": 762.4,
-        "pct": -0.4648,
+        "close": 757.83,
+        "pct": -0.5994,
         "outside": 2000.0,
         "inside": 0.0,
         "total_candidate": 2000.0,
@@ -2377,9 +2376,9 @@
         "base_label": "标普固定场外",
         "mechanisms": [],
         "windows": {
-          "cum5": 0.0814,
-          "cum10": -0.4582,
-          "cum20": -1.0589,
+          "cum5": -0.958,
+          "cum10": -1.0768,
+          "cum20": -1.8977,
           "count_le2_5": 0,
           "days5": 5,
           "days10": 10,
@@ -2394,35 +2393,6 @@
         "counted_in_plan": true
       },
       "recent_decisions": [
-        {
-          "date": "2026-05-15",
-          "symbol": "spx",
-          "close": 739.17,
-          "pct": -1.2029,
-          "outside": 2000.0,
-          "inside": 3000.0,
-          "total_candidate": 5000.0,
-          "counted_amount": 5000.0,
-          "base_label": "标普有效回调",
-          "mechanisms": [],
-          "windows": {
-            "cum5": 0.2102,
-            "cum10": 2.5699,
-            "cum20": 4.0879,
-            "count_le2_5": 0,
-            "days5": 5,
-            "days10": 10,
-            "days20": 20
-          },
-          "rolling_before": {
-            "5": 8000.0,
-            "10": 18000.0,
-            "20": 38000.0
-          },
-          "theory": "标普三机制轻量化：场外2000固定，压力机制主要管理场内候选金额。",
-          "counted_in_plan": false,
-          "display_only": true
-        },
         {
           "date": "2026-05-18",
           "symbol": "spx",
@@ -4636,18 +4606,46 @@
           },
           "theory": "标普三机制轻量化：场外2000固定，压力机制主要管理场内候选金额。",
           "counted_in_plan": true
+        },
+        {
+          "date": "2026-09-10",
+          "symbol": "spx",
+          "close": 757.83,
+          "pct": -0.5994,
+          "outside": 2000.0,
+          "inside": 0.0,
+          "total_candidate": 2000.0,
+          "counted_amount": 2000.0,
+          "base_label": "标普固定场外",
+          "mechanisms": [],
+          "windows": {
+            "cum5": -0.958,
+            "cum10": -1.0768,
+            "cum20": -1.8977,
+            "count_le2_5": 0,
+            "days5": 5,
+            "days10": 10,
+            "days20": 20
+          },
+          "rolling_before": {
+            "5": 8000.0,
+            "10": 18000.0,
+            "20": 38000.0
+          },
+          "theory": "标普三机制轻量化：场外2000固定，压力机制主要管理场内候选金额。",
+          "counted_in_plan": true
         }
       ],
-      "plan_decisions_count": 77,
+      "plan_decisions_count": 78,
       "progress": {
         "start_cost": 951600.0,
         "target_cost": 1620000.0,
-        "planned_counted_since_start": 177000.0,
-        "current_plan_cost": 1128600.0,
-        "remaining": 491400.0,
-        "progress_pct": 69.67,
+        "planned_counted_since_start": 179000.0,
+        "current_plan_cost": 1130600.0,
+        "remaining": 489400.0,
+        "progress_pct": 69.79,
         "avg20_counted": 2000.0,
-        "estimated_trading_days_left": 246
+        "estimated_trading_days_left": 245
       }
     }
   }
